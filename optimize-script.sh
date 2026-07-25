@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 # Chatwoot WhatsApp Groups - Performance Optimization Script
 # This script detects your server hardware and recommends/applies
 # optimal SIDEKIQ_CONCURRENCY and Postgres max_connections values.
@@ -40,8 +40,8 @@ LOCALE="pt-BR"
 declare -A T
 
 if [[ "$LOCALE" == "pt-BR" || "$LOCALE" == "pt" ]]; then
-  T["header_title"]="Chatwoot WhatsApp Groups - OtimizaÃ§Ã£o de Performance"
-  T["docker_not_installed"]="Docker nÃ£o estÃ¡ instalado. Por favor, instale o Docker primeiro."
+  T["header_title"]="Chatwoot WhatsApp Groups - Otimização de Performance"
+  T["docker_not_installed"]="Docker não está instalado. Por favor, instale o Docker primeiro."
   T["detecting_hardware"]="Detectando hardware do servidor..."
   T["vcpus"]="vCPUs detectados"
   T["ram_mb"]="RAM total (MB)"
@@ -52,44 +52,44 @@ if [[ "$LOCALE" == "pt-BR" || "$LOCALE" == "pt" ]]; then
   T["detecting_platform"]="Detectando plataforma de gerenciamento..."
   T["platform_detected"]="Plataforma detectada"
   T["no_platform_detected"]="Nenhuma plataforma de gerenciamento detectada."
-  T["platform_not_supported"]="nÃ£o Ã© suportado para configuraÃ§Ã£o automÃ¡tica. Aplique as configuraÃ§Ãµes manualmente."
-  T["manual_instructions"]="Aplique estas configuraÃ§Ãµes manualmente:"
-  T["manual_sidekiq"]="Adicione ao seu arquivo .env ou variÃ¡veis de ambiente do Chatwoot:"
+  T["platform_not_supported"]="não é suportado para configuração automática. Aplique as configurações manualmente."
+  T["manual_instructions"]="Aplique estas configurações manualmente:"
+  T["manual_sidekiq"]="Adicione ao seu arquivo .env ou variáveis de ambiente do Chatwoot:"
   T["manual_postgres"]="Para o Postgres max_connections, execute no container Postgres:"
-  T["manual_restart"]="Depois reinicie seus serviÃ§os Chatwoot."
-  T["looking_for_chatwoot"]="Procurando serviÃ§os Chatwoot..."
-  T["no_chatwoot_found"]="Nenhum serviÃ§o Chatwoot encontrado."
-  T["found_chatwoot"]="ServiÃ§os Chatwoot encontrados:"
-  T["select_service"]="Selecione o serviÃ§o para otimizar"
+  T["manual_restart"]="Depois reinicie seus serviços Chatwoot."
+  T["looking_for_chatwoot"]="Procurando serviços Chatwoot..."
+  T["no_chatwoot_found"]="Nenhum serviço Chatwoot encontrado."
+  T["found_chatwoot"]="Serviços Chatwoot encontrados:"
+  T["select_service"]="Selecione o serviço para otimizar"
   T["cancel_return"]="Cancelar e sair"
-  T["invalid_selection"]="SeleÃ§Ã£o invÃ¡lida"
-  T["applying_settings"]="Aplicando configuraÃ§Ãµes..."
-  T["env_updated"]="VariÃ¡vel de ambiente atualizada"
-  T["env_already_set"]="VariÃ¡vel jÃ¡ configurada"
-  T["restart_required"]="Reinicie o serviÃ§o para aplicar as alteraÃ§Ãµes."
-  T["restart_now"]="Reiniciar o serviÃ§o agora?"
-  T["restarting"]="Reiniciando serviÃ§o..."
-  T["restart_success"]="ServiÃ§o reiniciado com sucesso!"
-  T["restart_failed"]="Falha ao reiniciar o serviÃ§o."
-  T["done"]="OtimizaÃ§Ã£o concluÃ­da!"
+  T["invalid_selection"]="Seleção inválida"
+  T["applying_settings"]="Aplicando configurações..."
+  T["env_updated"]="Variável de ambiente atualizada"
+  T["env_already_set"]="Variável já configurada"
+  T["restart_required"]="Reinicie o serviço para aplicar as alterações."
+  T["restart_now"]="Reiniciar o serviço agora?"
+  T["restarting"]="Reiniciando serviço..."
+  T["restart_success"]="Serviço reiniciado com sucesso!"
+  T["restart_failed"]="Falha ao reiniciar o serviço."
+  T["done"]="Otimização concluída!"
   T["cancelled"]="Cancelado."
-  T["whatsapp_groups_enabled"]="BAILEYS_WHATSAPP_GROUPS_ENABLED serÃ¡ configurado como true"
-  T["confirm_apply"]="Aplicar estas configuraÃ§Ãµes?"
-  T["postgres_note"]="Nota: max_connections do Postgres requer reinicializaÃ§Ã£o do container Postgres para aplicar."
+  T["whatsapp_groups_enabled"]="BAILEYS_WHATSAPP_GROUPS_ENABLED será configurado como true"
+  T["confirm_apply"]="Aplicar estas configurações?"
+  T["postgres_note"]="Nota: max_connections do Postgres requer reinicialização do container Postgres para aplicar."
   T["postgres_applying"]="Aplicando max_connections no Postgres..."
   T["postgres_applied"]="max_connections atualizado para"
   T["postgres_apply_failed"]="Falha ao aplicar max_connections. Aplique manualmente."
-  T["postgres_restart_required"]="Reinicie o container Postgres para aplicar a alteraÃ§Ã£o."
-  T["postgres_default_warning"]="max_connections estÃ¡ no valor padrÃ£o (100). Recomendamos aumentar."
-  T["postgres_ok"]="max_connections jÃ¡ estÃ¡ acima do padrÃ£o"
+  T["postgres_restart_required"]="Reinicie o container Postgres para aplicar a alteração."
+  T["postgres_default_warning"]="max_connections está no valor padrão (100). Recomendamos aumentar."
+  T["postgres_ok"]="max_connections já está acima do padrão"
   T["checking_postgres"]="Verificando Postgres max_connections..."
-  T["postgres_not_found"]="Container Postgres nÃ£o encontrado. Ajuste max_connections manualmente."
-  T["summary_title"]="Resumo das alteraÃ§Ãµes"
-  T["compose_injected"]="VariÃ¡vel adicionada ao docker-compose para"
-  T["compose_already_set"]="VariÃ¡vel jÃ¡ existe no docker-compose para"
-  T["compose_section_not_found"]="SeÃ§Ã£o environment nÃ£o encontrada no docker-compose para"
+  T["postgres_not_found"]="Container Postgres não encontrado. Ajuste max_connections manualmente."
+  T["summary_title"]="Resumo das alterações"
+  T["compose_injected"]="Variável adicionada ao docker-compose para"
+  T["compose_already_set"]="Variável já existe no docker-compose para"
+  T["compose_section_not_found"]="Seção environment não encontrada no docker-compose para"
   T["coolify_link"]="Painel Coolify"
-  T["sidekiq_concurrency_target"]="SIDEKIQ_CONCURRENCY serÃ¡ configurado no sidekiq"
+  T["sidekiq_concurrency_target"]="SIDEKIQ_CONCURRENCY será configurado no sidekiq"
 else
   T["header_title"]="Chatwoot WhatsApp Groups - Performance Optimization"
   T["docker_not_installed"]="Docker is not installed. Please install Docker first."
@@ -160,18 +160,18 @@ BOLD='\033[1m'
 
 print_header() {
   echo ""
-  echo -e "${BLUE}â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—${NC}"
-  echo -e "${BLUE}â•‘${NC}   ${BOLD}${T[header_title]}${NC}"
-  echo -e "${BLUE}â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•${NC}"
+  echo -e "${BLUE}╔════════════════════════════════════════════════════════════╗${NC}"
+  echo -e "${BLUE}║${NC}   ${BOLD}${T[header_title]}${NC}"
+  echo -e "${BLUE}╚════════════════════════════════════════════════════════════╝${NC}"
   echo ""
 }
 
 print_success() {
-  echo -e "${GREEN}âœ”${NC} $1"
+  echo -e "${GREEN}✔${NC} $1"
 }
 
 print_error() {
-  echo -e "${RED}âœ—${NC} $1"
+  echo -e "${RED}✗${NC} $1"
 }
 
 print_warning() {
@@ -179,11 +179,11 @@ print_warning() {
 }
 
 print_info() {
-  echo -e "${CYAN}â†’${NC} $1"
+  echo -e "${CYAN}→${NC} $1"
 }
 
 print_detail() {
-  echo -e "  ${YELLOW}â”‚${NC} $1"
+  echo -e "  ${YELLOW}│${NC} $1"
 }
 
 # ============================================================
@@ -283,7 +283,7 @@ pg_exec_sql() {
   local pg_user pg_db
   pg_user=$(docker exec "$pg_container" printenv POSTGRES_USER 2>/dev/null || true)
   pg_db=$(docker exec "$pg_container" printenv POSTGRES_DB 2>/dev/null || true)
-  # Fallback chain: POSTGRES_USER â†’ postgres â†’ chatwoot
+  # Fallback chain: POSTGRES_USER → postgres → chatwoot
   local users_to_try=()
   [[ -n "$pg_user" ]] && users_to_try+=("$pg_user")
   users_to_try+=("postgres" "chatwoot")
@@ -807,5 +807,3 @@ main() {
 }
 
 main
-
-
